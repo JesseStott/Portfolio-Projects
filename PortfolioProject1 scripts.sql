@@ -138,3 +138,27 @@ WHERE dea.continent IS NOT NULL;
 
 SELECT *
 FROM PercentPopulationVaccinated;
+
+--Queries for Tableau Table
+
+SELECT SUM(new_cases) AS total_cases, SUM(cast(new_deaths AS INT)) AS total_deaths, SUM(cast(new_deaths AS INT))/SUM(new_cases)*100 AS DeathPercentage
+FROM [Portfolio Project 1]..CovidDeaths
+WHERE continent IS NOT NULL
+ORDER BY 1,2;
+
+SELECT location, SUM(CAST(new_deaths AS INT)) as TotalDeathCount
+FROM [Portfolio Project 1]..CovidDeaths
+WHERE continent IS NULL
+AND location NOT IN ('World','European Union', 'International')
+GROUP BY location
+ORDER BY TotalDeathCount DESC;
+
+SELECT location, population, MAX(total_cases) AS HighestInfectionCount, MAX((total_cases/population))*100 AS PercentPopulationInfected
+FROM [Portfolio Project 1]..CovidDeaths
+GROUP BY location, population
+ORDER BY PercentPopulationInfected DESC;
+
+SELECT location, population, date, MAX(total_cases) AS HighestInfectionCount, MAX((total_cases/population))*100 AS PercentPopulationInfected
+FROM [Portfolio Project 1]..CovidDeaths
+GROUP BY location, population, date
+ORDER BY PercentPopulationInfected DESC;
